@@ -1,14 +1,18 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { User } from 'src/~shared/user.decorator';
 
 @Controller('users')
+@UseGuards(AuthGuard('jwt'))
 export class UsersController {
 
   constructor(private readonly userService: UsersService) {}
 
   @Get()
-  async getAllUsers() {
+  async getAllUsers(@User() user: any) {
     return await this.userService.findAll();
   }
 
