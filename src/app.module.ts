@@ -1,6 +1,6 @@
-import { Module, ClassSerializerInterceptor } from '@nestjs/common';
+import { Module, ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -26,6 +26,10 @@ import { UserEntity } from './users/user.entity';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor }],
+  providers: [
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+    { provide: APP_PIPE, useClass: ValidationPipe },
+  ],
 })
 export class AppModule {}

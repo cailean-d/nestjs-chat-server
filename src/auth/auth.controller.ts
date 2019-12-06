@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, UseGuards, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, UseGuards, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
@@ -22,6 +22,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard('local'))
   async login(@User() user: UserEntity) {
     return this.authService.login(user);
