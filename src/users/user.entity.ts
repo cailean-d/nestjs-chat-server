@@ -1,9 +1,20 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, ObjectIdColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ObjectIdColumn,
+  BeforeInsert,
+  ObjectID,
+} from 'typeorm';
+import { Exclude, Transform } from 'class-transformer';
 
 @Entity('User')
 export class UserEntity {
+
   @ObjectIdColumn()
-  id: string;
+  @Transform((id: ObjectID) => id.toHexString(), { toPlainOnly: true })
+  id: ObjectID;
 
   @Column()
   nickname: string;
@@ -12,6 +23,7 @@ export class UserEntity {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @CreateDateColumn()
@@ -19,4 +31,7 @@ export class UserEntity {
 
   @UpdateDateColumn()
   updated: Date;
+
+  @BeforeInsert()
+  async hashPassword() { }
 }

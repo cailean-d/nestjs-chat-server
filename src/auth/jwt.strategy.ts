@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ObjectID } from 'mongodb';
 
 import { jwtConstants } from './constants';
 import { JwtPayload } from 'src/auth/jwt-payload.model';
@@ -17,6 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<Partial<UserEntity>> {
-    return { id: payload.sub, nickname: payload.nickname };
+    return { id: new ObjectID(payload.sub), nickname: payload.nickname };
   }
 }

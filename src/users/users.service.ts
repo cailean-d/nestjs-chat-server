@@ -20,7 +20,7 @@ export class UsersService {
   }
 
   async getById(id: string) {
-    return await this.userRepository.findOne({ where: { id } });
+    return await this.userRepository.findOne(id);
   }
 
   async getOneByEmail(email: string) {
