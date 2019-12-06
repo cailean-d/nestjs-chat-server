@@ -8,6 +8,7 @@ import {
   ObjectID,
 } from 'typeorm';
 import { Exclude, Transform } from 'class-transformer';
+import * as bcrypt from 'bcryptjs';
 
 @Entity('User')
 export class UserEntity {
@@ -33,5 +34,11 @@ export class UserEntity {
   updated: Date;
 
   @BeforeInsert()
-  async hashPassword() { }
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  async comparePassword(attempt: string) {
+    return await bcrypt.compare(attempt, this.password);
+  }
 }
