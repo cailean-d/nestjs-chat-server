@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UsersService } from 'src/users/users.service';
@@ -15,6 +15,9 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserEntity> {
+    if (typeof email !== 'string' || typeof password !== 'string') {
+      throw new BadRequestException();
+    }
     const user = await this.usersService.getOneByEmail(email);
     return (user && (await user.comparePassword(password))) ? user : null;
   }
