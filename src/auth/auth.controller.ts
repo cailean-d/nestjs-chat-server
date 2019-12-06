@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Delete, Param, UseGuards, Body, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, UseGuards, Body, UsePipes, ValidationPipe, Patch } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ObjectID } from 'typeorm';
 
 import { AuthService } from './auth.service';
 import { User } from 'src/~shared/user.decorator';
 import { CreateUserDto } from 'src/users/create-user.dto';
 import { UserEntity } from 'src/users/user.entity';
+import { ResetPasswordDto } from './reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -36,6 +38,12 @@ export class AuthController {
   @Post('confirm/:hash')
   confirmAccount(@Param('hash') hash: string) {
     return null;
+  }
+
+  @Patch('reset-password')
+  @UseGuards(AuthGuard('jwt'))
+  resetPassword(@User('id') id: ObjectID, @Body() data: ResetPasswordDto) {
+    return this.authService.resetPassword(id, data);
   }
 
 }
