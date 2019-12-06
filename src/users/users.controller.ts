@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@n
 import { AuthGuard } from '@nestjs/passport';
 
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './create-user.dto';
 import { User } from 'src/~shared/user.decorator';
 
 @Controller('users')

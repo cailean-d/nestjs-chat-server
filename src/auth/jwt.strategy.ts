@@ -4,6 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { jwtConstants } from './constants';
 import { JwtPayload } from 'src/auth/jwt-payload.model';
+import { UserEntity } from 'src/users/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<any> {
-    return { _id: payload.sub, nickname: payload.nickname };
+  async validate(payload: JwtPayload): Promise<Partial<UserEntity>> {
+    return { id: payload.sub, nickname: payload.nickname };
   }
 }

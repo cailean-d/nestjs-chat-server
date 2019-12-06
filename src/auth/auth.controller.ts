@@ -3,8 +3,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
 import { User } from 'src/~shared/user.decorator';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { User as IUser } from 'src/users/interfaces/users.model';
+import { CreateUserDto } from 'src/users/create-user.dto';
+import { UserEntity } from 'src/users/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +23,7 @@ export class AuthController {
 
   @Post('login')
   @UseGuards(AuthGuard('local'))
-  async login(@User() user: IUser) {
+  async login(@User() user: UserEntity) {
     return this.authService.login(user);
   }
 
